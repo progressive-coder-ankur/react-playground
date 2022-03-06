@@ -29,6 +29,8 @@ import { FiMenu, FiSearch } from 'react-icons/fi';
 import { HiCode } from 'react-icons/hi';
 import { MdHome, MdKeyboardArrowRight, MdKeyboard } from 'react-icons/md';
 import NextLink from 'next/link';
+import ThemeToggle from '../ThemeToggle';
+
 export default function Layout(props) {
   const sidebar = useDisclosure();
   const integrations = useDisclosure();
@@ -156,6 +158,7 @@ export default function Layout(props) {
           </InputGroup>
 
           <Flex align='center' gap={4}>
+            <ThemeToggle />
             <Icon
               boxSize={6}
               size={5}

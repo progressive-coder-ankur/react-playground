@@ -19,6 +19,8 @@ const TypingPro = () => {
   const [disable, setDisable] = useState(false);
   const [userInput, setUserInput] = useState('');
 
+  const color = useColorModeValue('gray.100', 'gray.900');
+
   const textAreaRef = useRef(null);
 
   const getData = () => {
@@ -94,12 +96,7 @@ const TypingPro = () => {
             align={'center'}
           >
             characters.length && (
-            <Box
-              w='5xl'
-              textAlign={'center'}
-              p={5}
-              bg={useColorModeValue('gray.100', 'gray.900')}
-            >
+            <Box w='5xl' textAlign={'center'} p={5} bg={color}>
               {characters.map((item, i) => (
                 <Text
                   as='span'
@@ -107,7 +104,7 @@ const TypingPro = () => {
                   fontSize='3xl'
                   color={
                     item.isCorrect === null
-                      ? `useColorModeValue('black', 'white')`
+                      ? color
                       : item.isCorrect
                       ? 'green'
                       : 'red'

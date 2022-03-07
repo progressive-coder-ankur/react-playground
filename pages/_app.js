@@ -4,7 +4,6 @@ import Chakra from '../components/Chakra';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import Auth from '../components/Auth';
-import Account from '../components/Account';
 
 function MyApp({ Component, pageProps }) {
   const [session, setSession] = useState(null);

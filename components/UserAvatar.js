@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { FormLabel, Image, Box, Input, Text, Button } from '@chakra-ui/react';
+import {
+  FormLabel,
+  Image,
+  Box,
+  Input,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 export default function Avatar({ url, size, onUpload }) {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
+
+  const ImageBackground = useColorModeValue('gray.700', 'gray.200');
 
   useEffect(() => {
     if (url) downloadImage(url);
@@ -58,7 +66,7 @@ export default function Avatar({ url, size, onUpload }) {
     <Box
       display='flex'
       justifyContent='center'
-      alignItem='center'
+      alignItems='center'
       flexDirection='column'
       maxW='full'
     >
@@ -70,6 +78,7 @@ export default function Avatar({ url, size, onUpload }) {
           className='avatar image'
           style={{ height: size, width: size }}
           mb={5}
+          bg={ImageBackground}
         />
       ) : (
         <Box mb={5} style={{ height: size, width: size }} />

@@ -21,8 +21,8 @@ function MyApp({ Component, pageProps }) {
       {!session ? (
         <Auth />
       ) : (
-        <Layout>
-          <Component {...pageProps} />
+        <Layout session={session}>
+          <Component {...pageProps} session={session} />
         </Layout>
       )}
     </Chakra>

@@ -23,6 +23,8 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
+import { supabase } from '../../lib/supabaseClient';
+
 import { FaBell, FaClipboardCheck, FaRss } from 'react-icons/fa';
 import { BsGearFill } from 'react-icons/bs';
 import { FiMenu, FiSearch } from 'react-icons/fi';
@@ -34,6 +36,10 @@ import ThemeToggle from '../ThemeToggle';
 export default function Layout(props) {
   const sidebar = useDisclosure();
   const integrations = useDisclosure();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+  };
 
   const NavItem = props => {
     const { icon, href, children, ...rest } = props;
@@ -116,6 +122,7 @@ export default function Layout(props) {
       </Flex>
     </Box>
   );
+
   return (
     <Box
       as='section'
@@ -177,7 +184,10 @@ export default function Layout(props) {
               ></MenuButton>
               <MenuList>
                 <MenuGroup title='Profile'>
-                  <MenuItem>My Account</MenuItem>
+                  <MenuItem>
+                    <NavItem href='/profile'>My Account</NavItem>
+                  </MenuItem>
+                  <MenuItem onClick={() => handleLogout()}>LogOut</MenuItem>
                 </MenuGroup>
               </MenuList>
             </Menu>
@@ -186,7 +196,12 @@ export default function Layout(props) {
 
         <Box as='main' p='4'>
           {/* Add content here, remove div below  */}
-          <Box borderWidth='4px' borderStyle='dashed' rounded='md'>
+          <Box
+            borderWidth='4px'
+            borderStyle='dashed'
+            rounded='md'
+            p={{ base: 6, md: 12 }}
+          >
             {props.children}
           </Box>
         </Box>

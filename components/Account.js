@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import {
-  Box,
-  Center,
-  SimpleGrid,
-  GridItem,
   Heading,
-  Text,
   FormLabel,
-  Container,
   Input,
   Button,
+  FormControl,
+  Flex,
+  Stack,
   useColorModeValue,
 } from '@chakra-ui/react';
 import UserAvatar from '../components/UserAvatar';
 
-export default function Account({ session }) {
+export default function Account(props) {
+  const { session } = props;
+
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
@@ -79,91 +78,84 @@ export default function Account({ session }) {
   }
 
   return (
-    <Container maxW={'container.lg'}>
-      <Box as='form' mb={6} rounded='lg' shadow='xl' p={6}>
-        <Center pb={0} flexDirection='column' mb={5}>
-          <Heading as='h1'>User Profile</Heading>
-          <Text as='p' mb={4}>
-            Update your profile..
-          </Text>
+    <>
+      <Flex align={'center'} justify={'center'}>
+        <Stack
+          spacing={4}
+          w={'full'}
+          maxW={'md'}
+          bg={useColorModeValue('gray.50', 'gray.800')}
+          rounded={'xl'}
+          boxShadow={'lg'}
+          p={6}
+          my={12}
+        >
+          <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
+            User Profile Edit
+          </Heading>
+
           <UserAvatar
-            url={avatar_url}
             size={150}
+            url={avatar_url}
             onUpload={url => {
               setAvatarUrl(url);
               updateProfile({ username, website, avatar_url: url });
             }}
           />
-        </Center>
 
-        <SimpleGrid
-          columns={2}
-          px={6}
-          py={4}
-          spacing={4}
-          borderBottom='solid 1px'
-          borderColor={useColorModeValue('gray.200', 'gray.700')}
-        >
-          <GridItem>
-            <FormLabel htmlFor='email'>Email Address</FormLabel>
+          <FormControl id='userName' isRequired>
+            <FormLabel>User name</FormLabel>
             <Input
-              variant='solid'
-              mt={0}
-              id='email'
-              name='email'
+              placeholder='UserName'
+              _placeholder={{ color: 'gray.500' }}
+              type='text'
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id='email'>
+            <FormLabel>Email address</FormLabel>
+            <Input
+              _placeholder={{ color: 'gray.500' }}
               type='email'
               value={session.user.email}
               disabled
             />
-          </GridItem>
-          <GridItem>
-            <FormLabel htmlFor='name'>Name</FormLabel>
+          </FormControl>
+          <FormControl id='wbsite'>
+            <FormLabel>Website</FormLabel>
             <Input
-              variant='solid'
-              mt={0}
+              placeholder='UserName'
+              _placeholder={{ color: 'gray.500' }}
               type='text'
-              id='name'
-              name='name'
-              color={'#000'}
-              value={username || ''}
-              onChange={e => setUsername(e.target.value)}
-            />
-          </GridItem>
-          <GridItem colSpan={2}>
-            <FormLabel htmlFor='website'>Website</FormLabel>
-            <Input
-              variant='solid'
-              mt={0}
-              id='website'
-              name='website'
-              type='website'
-              color={'#000'}
-              value={website || ''}
+              value={website}
               onChange={e => setWebsite(e.target.value)}
             />
-          </GridItem>
-
-          <Button
-            variant='solid'
-            w='full'
-            py={2}
-            type='submit'
-            onClick={() => updateProfile({ username, website, avatar_url })}
-            disabled={loading}
-          >
-            {loading ? 'Loading ...' : 'Update'}
-          </Button>
-          <Button
-            variant='solid'
-            w='full'
-            py={2}
-            type='submit'
-            onClick={() => supabase.auth.signOut()}
-          >
-            SignOut
-          </Button>
-        </SimpleGrid>
-      </Box>
-    </Container>
+          </FormControl>
+          <Stack spacing={6} direction={['column', 'row']}>
+            <Button
+              bg={'red.400'}
+              color={'white'}
+              w='full'
+              _hover={{
+                bg: 'red.500',
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              bg={'blue.400'}
+              color={'white'}
+              w='full'
+              _hover={{
+                bg: 'blue.500',
+              }}
+            >
+              {loading ? 'Updating...' : 'Update'}
+            </Button>
+          </Stack>
+        </Stack>
+      </Flex>
+    </>
   );
 }

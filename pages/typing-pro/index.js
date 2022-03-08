@@ -84,50 +84,49 @@ const TypingPro = () => {
         <meta name='description' content='Typing practice app' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Container p={10}>
-        <Center h={'calc(100vh - 10%)'}>
-          {loading ? (
-            <Box w='full' h='full' className='loading'>
-              <Spinner />
+
+      <Center>
+        {loading ? (
+          <Box w='full' h='full' className='loading'>
+            <Spinner />
+          </Box>
+        ) : (
+          <VStack
+            spacing={{ base: 10, md: 20 }}
+            justify='center'
+            align={'center'}
+          >
+            characters.length && (
+            <Box w='5xl' textAlign={'center'} p={5} bg={blockcolor}>
+              {characters.map((item, i) => (
+                <Text
+                  as='span'
+                  key={i}
+                  fontSize='2xl'
+                  color={
+                    item.isCorrect === null
+                      ? textcolor
+                      : item.isCorrect
+                      ? 'green'
+                      : 'red'
+                  }
+                >
+                  {item.name}
+                </Text>
+              ))}
             </Box>
-          ) : (
-            <VStack
-              spacing={{ base: 10, md: 20 }}
-              justify='center'
-              align={'center'}
-            >
-              characters.length && (
-              <Box w='5xl' textAlign={'center'} p={5} bg={blockcolor}>
-                {characters.map((item, i) => (
-                  <Text
-                    as='span'
-                    key={i}
-                    fontSize='3xl'
-                    color={
-                      item.isCorrect === null
-                        ? textcolor
-                        : item.isCorrect
-                        ? 'green'
-                        : 'red'
-                    }
-                  >
-                    {item.name}
-                  </Text>
-                ))}
-              </Box>
-              <Textarea
-                onChange={e => handleChange(e)}
-                disabled={disable}
-                value={userInput}
-                ref={textAreaRef}
-                rows={10}
-                h='20rem'
-              />
-              )
-            </VStack>
-          )}
-        </Center>
-      </Container>
+            <Textarea
+              onChange={e => handleChange(e)}
+              disabled={disable}
+              value={userInput}
+              ref={textAreaRef}
+              rows={10}
+              h='15rem'
+            />
+            )
+          </VStack>
+        )}
+      </Center>
     </>
   );
 };

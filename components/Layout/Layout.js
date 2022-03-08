@@ -30,19 +30,21 @@ export default function Layout(props) {
         maxW='full'
         overflow='hidden'
         transition='.3s ease'
+        minH={'100vh'}
       >
-        <TopNav sidebar={sidebar} />
+        <TopNav sidebar={sidebar} session={props.session} />
 
         <Box as='main' p='4'>
-          {/* Add content here, remove div below  */}
           <Box
             borderWidth='4px'
             borderStyle='dashed'
             rounded='md'
             p={{ base: 6, md: 12 }}
             maxW='full'
+            minH={'calc(100vh - 120px)'}
             display={{ base: 'none', md: 'flex' }}
             justifyContent='center'
+            alignItems={'center'}
             overflow='hidden'
           >
             {props.children}

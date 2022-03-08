@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Flex,
@@ -22,6 +22,61 @@ import NextLink from 'next/link';
 import { supabase } from '../../lib/supabaseClient';
 
 const TopNav = props => {
+  const { session, sidebar } = props;
+  const user = supabase.auth.user();
+  const [avatar_url, setAvatarUrl] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState(null);
+  const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    getUserProfilePic();
+  }, [session]);
+
+  useEffect(() => {
+    if (avatar_url) downloadImage(avatar_url);
+  }, [avatar_url]);
+
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from('avatars')
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const url = URL.createObjectURL(data);
+      setAvatar(url);
+    } catch (error) {
+      console.log('Error downloading image: ', error.message);
+    }
+  }
+
+  async function getUserProfilePic() {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select(`username,  avatar_url`)
+        .eq('id', user.id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setUsername(data.username);
+        setAvatarUrl(data.avatar_url);
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
   };
@@ -41,7 +96,7 @@ const TopNav = props => {
       <IconButton
         aria-label='Menu'
         display={{ base: 'inline-flex', md: 'none' }}
-        onClick={props.sidebar.onOpen}
+        onClick={sidebar.onOpen}
         icon={<FiMenu />}
         size='sm'
       />
@@ -63,11 +118,11 @@ const TopNav = props => {
           <MenuButton
             as={Avatar}
             ml='4'
-            size='md'
-            name='user'
-            src='/images/lary-head.svg'
+            size='sm'
+            name={username}
+            src={avatar ? avatar : '/images/lary-head.svg'}
             cursor='pointer'
-          ></MenuButton>
+          />
           <MenuList>
             <MenuGroup title='User Menu'>
               <MenuItem>

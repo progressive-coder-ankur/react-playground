@@ -127,7 +127,9 @@ const TopNav = props => {
             <MenuGroup title='User Menu'>
               <MenuItem>
                 <NextLink href='/profile' passHref>
-                  <Link _hover={{ textDecoration: 'none' }}>Profile</Link>
+                  <Link w='full' _hover={{ textDecoration: 'none' }}>
+                    Profile
+                  </Link>
                 </NextLink>
               </MenuItem>
               <MenuItem onClick={() => handleLogout()}>Log Out</MenuItem>

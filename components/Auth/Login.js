@@ -15,6 +15,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
+import { useState } from 'react';
+
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const LogInForm = props => {
@@ -28,7 +30,11 @@ const LogInForm = props => {
     showPassword,
     setShowPassword,
     loading,
+    handleLoginWithMaginLink,
   } = props;
+
+  const [useMaginLink, setUseMagicLink] = useState(true);
+
   return (
     <Flex
       minH={'100vh'}
@@ -59,50 +65,85 @@ const LogInForm = props => {
                 onChange={e => setEmail(e.target.value)}
               />
             </FormControl>
-            <FormControl id='password'>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  isRequired
-                />
-                <InputRightElement h={'full'}>
-                  <Button
-                    variant={'ghost'}
-                    onClick={() =>
-                      setShowPassword(showPassword => !showPassword)
-                    }
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align={'start'}
-                justify={'space-between'}
-              >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={'blue.400'}>Forgot password?</Link>
+            {useMaginLink ? (
+              <Stack spacing={10}>
+                <Button
+                  bg={'blue.400'}
+                  color={'white'}
+                  _hover={{
+                    bg: 'blue.500',
+                  }}
+                  onClick={e => {
+                    e.preventDefault();
+                    handleLoginWithMaginLink(email);
+                  }}
+                >
+                  {loading ? 'Logging In..' : 'Sign in'}
+                </Button>
               </Stack>
-              <Button
-                bg={'blue.400'}
-                color={'white'}
-                _hover={{
-                  bg: 'blue.500',
-                }}
-                onClick={e => {
-                  e.preventDefault();
-                  handleLogin(email, password);
-                }}
-              >
-                {loading ? 'Logging In..' : 'Sign in'}
-              </Button>
-            </Stack>
+            ) : (
+              <>
+                <FormControl id='password'>
+                  <FormLabel>Password</FormLabel>
+                  <InputGroup>
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      isRequired
+                    />
+                    <InputRightElement h={'full'}>
+                      <Button
+                        variant={'ghost'}
+                        onClick={() =>
+                          setShowPassword(showPassword => !showPassword)
+                        }
+                      >
+                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+                <Stack spacing={10}>
+                  <Stack
+                    direction={{ base: 'column', sm: 'row' }}
+                    align={'start'}
+                    justify={'space-between'}
+                  >
+                    <Checkbox>Remember me</Checkbox>
+                    <Link color={'blue.400'}>Forgot password?</Link>
+                  </Stack>
+                  <Button
+                    bg={'blue.400'}
+                    color={'white'}
+                    _hover={{
+                      bg: 'blue.500',
+                    }}
+                    onClick={e => {
+                      e.preventDefault();
+                      handleLogin(email, password);
+                    }}
+                  >
+                    {loading ? 'Logging In..' : 'Sign in'}
+                  </Button>
+                </Stack>
+              </>
+            )}
+
+            <Button
+              bg={'blue.400'}
+              color={'white'}
+              _hover={{
+                bg: 'blue.500',
+              }}
+              onClick={e => {
+                e.preventDefault();
+                setUseMagicLink(!useMaginLink);
+              }}
+            >
+              {useMaginLink ? 'Try other method' : 'Try magic link method'}
+            </Button>
+
             <Stack pt={6}>
               <Text align={'center'}>
                 Don&apos;t have an account ?{' '}

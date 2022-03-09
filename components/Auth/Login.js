@@ -78,7 +78,7 @@ const LogInForm = props => {
                     handleLoginWithMaginLink(email);
                   }}
                 >
-                  {loading ? 'Logging In..' : 'Sign in'}
+                  {loading ? 'Logging In..' : 'Get magic Link'}
                 </Button>
               </Stack>
             ) : (
@@ -141,7 +141,7 @@ const LogInForm = props => {
                 setUseMagicLink(!useMaginLink);
               }}
             >
-              {useMaginLink ? 'Try other method' : 'Try magic link method'}
+              {useMaginLink ? 'Use email & password' : 'Get magic Link'}
             </Button>
 
             <Stack pt={6}>

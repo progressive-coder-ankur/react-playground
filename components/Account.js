@@ -125,7 +125,7 @@ export default function Account(props) {
           <FormControl id='wbsite'>
             <FormLabel>Website</FormLabel>
             <Input
-              placeholder='UserName'
+              placeholder='Your Website'
               _placeholder={{ color: 'gray.500' }}
               type='text'
               value={website}

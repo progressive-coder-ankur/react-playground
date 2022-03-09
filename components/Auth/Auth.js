@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import SignUpForm from './Signup';
 import LogInForm from './Login';
@@ -11,11 +11,48 @@ export default function Auth(props) {
   const [password, setPassword] = useState('');
   const [showSignUp, setShowSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    signedIn && getUser();
+  }, [signedIn]);
+
+  const getUser = async () => {
+    try {
+      setLoading(false);
+
+      const { user, error } = await supabase.auth.api.getUser(
+        'ACCESS_TOKEN_JWT'
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        console.log(data);
+        setUserData(data);
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const ListenSignInEvent = () => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event == 'SIGNED_IN') setSignedIn(true);
+    });
+  };
 
   const handleSignup = async (email, password) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signUp({ email, password });
+      const { user, session, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
       if (error) throw error;
       setData({
         title: 'Account created.',
@@ -50,7 +87,7 @@ export default function Auth(props) {
       if (error) throw error;
       setData({
         title: 'Successfully logged in.',
-        description: `Welcome Back ${user.username} !`,
+        description: `Welcome Back  ${userData}!`,
         status: 'success',
         duration: 6000,
         isClosable: true,

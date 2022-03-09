@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }) {
       {!session ? (
         <Auth setData={setData} />
       ) : (
-        <Layout session={session}>
+        <Layout>
           <Component {...pageProps} session={session} />
         </Layout>
       )}

@@ -141,7 +141,7 @@ export default function Account(props) {
                 bg: 'red.500',
               }}
             >
-              Cancel
+              Log out
             </Button>
             <Button
               bg={'blue.400'}

@@ -22,6 +22,8 @@ const SignUpForm = props => {
     setShowPassword,
     email,
     password,
+    setEmail,
+    setPassword,
     handleSignup,
     setShowSignUp,
     loading,
@@ -55,7 +57,7 @@ const SignUpForm = props => {
                 type='email'
                 isRequired
                 value={email}
-                onChange={() => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               />
             </FormControl>
             <FormControl id='password' isRequired>
@@ -64,7 +66,7 @@ const SignUpForm = props => {
                 <Input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={() => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   isRequired
                 />
                 <InputRightElement h={'full'}>
@@ -87,7 +89,7 @@ const SignUpForm = props => {
                 _hover={{
                   bg: 'blue.500',
                 }}
-                onClick={() => handleSignup()}
+                onClick={() => handleSignup(email, password)}
               >
                 {loading ? 'Submitting' : 'Sign up'}
               </Button>

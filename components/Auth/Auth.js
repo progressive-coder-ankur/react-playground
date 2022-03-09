@@ -17,15 +17,7 @@ export default function Auth(props) {
       setLoading(true);
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) {
-        setShowToast(true);
-        setToastData({
-          title: 'Error',
-          description: error.error_description || error.message,
-          status: 'error',
-          duration: 3000,
-          type: 'error',
-          isClosable: true,
-        });
+        throw error;
       } else {
         setShowToast(true);
         setToastData({
@@ -38,7 +30,15 @@ export default function Auth(props) {
         });
       }
     } catch (error) {
-      alert(error.error_description || error.message);
+      setShowToast(true);
+      setToastData({
+        title: 'Error',
+        description: error.error_description || error.message,
+        status: 'error',
+        duration: 3000,
+        type: 'error',
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }

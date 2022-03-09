@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import {
   FormLabel,
-  Image,
-  Box,
   Input,
   FormControl,
   Stack,
@@ -13,6 +11,7 @@ import {
   Button,
   IconButton,
   useColorModeValue,
+  VisuallyHidden,
 } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 
@@ -73,7 +72,6 @@ export default function UserAvatar({ url, size, onUpload }) {
   return (
     <>
       <FormControl id='userName'>
-        <FormLabel>User Icon</FormLabel>
         <Stack direction={['column', 'row']} spacing={6}>
           <Center>
             <Avatar
@@ -90,26 +88,34 @@ export default function UserAvatar({ url, size, onUpload }) {
                 colorScheme='red'
                 aria-label='remove Image'
                 icon={<SmallCloseIcon />}
+                onClick={() => setAvatarUrl(null)}
               />
             </Avatar>
           </Center>
           <Center w='full'>
-            <Button w='full'>
-              <FormLabel htmlFor='single'>
-                {uploading ? 'Uploading ...' : 'Upload'}
-              </FormLabel>
+            <FormLabel
+              htmlFor='single'
+              px={4}
+              py={2}
+              rounded='full'
+              bg={'blue.400'}
+              color={'white'}
+              _hover={{
+                bg: 'blue.500',
+              }}
+            >
+              {uploading ? 'Uploading ...' : 'Upload'}
+            </FormLabel>
+
+            <VisuallyHidden>
               <Input
-                style={{
-                  visibility: 'hidden',
-                  position: 'absolute',
-                }}
                 type='file'
                 id='single'
-                onChange={e => uploadAvatar(event)}
+                onChange={e => uploadAvatar(e)}
                 accept='image/*'
                 disabled={uploading}
               />
-            </Button>
+            </VisuallyHidden>
           </Center>
         </Stack>
       </FormControl>

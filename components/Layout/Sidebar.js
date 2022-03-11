@@ -43,6 +43,9 @@ const SidebarContent = props => (
       <NavItem href='/typing-pro' icon={MdKeyboard}>
         Typing Pro
       </NavItem>
+      <NavItem href='/todos' icon={MdKeyboard}>
+        Todos
+      </NavItem>
     </Flex>
   </Box>
 );

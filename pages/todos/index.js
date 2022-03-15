@@ -13,6 +13,7 @@ import {
   HStack,
   VStack,
   Text,
+  Heading,
   Checkbox,
 } from '@chakra-ui/react';
 
@@ -191,87 +192,94 @@ const TodosPage = props => {
               {error.message}
             </Text>
           )}
-
-          <VStack align='flex-start' spacing={0} justify='center' w='full'>
-            {fetchedTodos.map(({ title, id, is_complete }, i) => {
-              return (
-                <>
-                  <HStack
-                    spacing={'6'}
-                    justify='flex-start'
-                    align='center'
-                    w='2xl'
-                    bg={i % 2 === 0 ? 'purple.600' : 'purple.400'}
-                    px={{ base: 8, md: 10 }}
-                    py={2}
-                    borderTop={i !== 0 ? '1px solid' : 'none'}
-                    transform={i % 2 === 0 ? 'skewX(2.5deg)' : 'skewX(-2.5deg)'}
-                  >
-                    <Checkbox
-                      size='lg'
-                      colorScheme={'green'}
-                      defaultChecked={is_complete}
-                      onChange={() => handleChecked(id, is_complete, i)}
-                      spacing='2rem'
-                      icon={<CheckIcon />}
-                    />
-                    <Editable
-                      key={id}
-                      defaultValue={title}
-                      fontSize='lg'
-                      isPreviewFocusable={true}
-                      selectAllOnFocus={false}
-                      onSubmit={() => handleSubmit(parseInt(id))}
-                      display='flex'
-                      maxW={'full'}
-                      w='xl'
+          {fetchedTodos.length > 0 ? (
+            <VStack align='flex-start' spacing={0} justify='center' w='full'>
+              {fetchedTodos?.map(({ title, id, is_complete }, i) => {
+                return (
+                  <>
+                    <HStack
+                      spacing={'6'}
+                      justify='flex-start'
+                      align='center'
+                      w='2xl'
+                      bg={i % 2 === 0 ? 'purple.600' : 'purple.400'}
+                      px={{ base: 8, md: 10 }}
+                      py={2}
+                      borderTop={i !== 0 ? '1px solid' : 'none'}
+                      transform={
+                        i % 2 === 0 ? 'skewX(2.5deg)' : 'skewX(-2.5deg)'
+                      }
                     >
-                      <Tooltip label='Click to edit'>
-                        <EditablePreview
+                      <Checkbox
+                        size='lg'
+                        colorScheme={'green'}
+                        defaultChecked={is_complete}
+                        onChange={() => handleChecked(id, is_complete, i)}
+                        spacing='2rem'
+                        icon={<CheckIcon />}
+                      />
+                      <Editable
+                        key={id}
+                        defaultValue={title}
+                        fontSize='lg'
+                        isPreviewFocusable={true}
+                        selectAllOnFocus={false}
+                        onSubmit={() => handleSubmit(parseInt(id))}
+                        display='flex'
+                        maxW={'full'}
+                        w='xl'
+                      >
+                        <Tooltip label='Click to edit'>
+                          <EditablePreview
+                            py={2}
+                            px={4}
+                            w={'max-content'}
+                            cursor='pointer'
+                            pos='relative'
+                            color={'gray.100'}
+                            _hover={{
+                              background: 'rgba(0,0,0,0.3)',
+                            }}
+                            _before={{
+                              content: '""',
+                              position: 'absolute',
+                              top: '50%',
+                              left: '0%',
+                              height: '3px',
+                              width: is_complete ? '100%' : '0%',
+                              backgroundColor: strikeThroughColor,
+                              opacity: is_complete ? 1 : 0,
+                              transition: 'all 0.4s ease-in-out',
+                            }}
+                          />
+                        </Tooltip>
+                        <Input
                           py={2}
                           px={4}
-                          w={'max-content'}
-                          cursor='pointer'
-                          pos='relative'
-                          color={'gray.100'}
-                          _hover={{
-                            background: 'rgba(0,0,0,0.3)',
-                          }}
-                          _before={{
-                            content: '""',
-                            position: 'absolute',
-                            top: '50%',
-                            left: '0%',
-                            height: '3px',
-                            width: is_complete ? '100%' : '0%',
-                            backgroundColor: strikeThroughColor,
-                            opacity: is_complete ? 1 : 0,
-                            transition: 'all 0.4s ease-in-out',
-                          }}
+                          width={'md'}
+                          onFocus={() => setNewTitle(title)}
+                          onChange={e => setNewTitle(e.target.value)}
+                          as={EditableInput}
                         />
-                      </Tooltip>
-                      <Input
-                        py={2}
-                        px={4}
-                        width={'md'}
-                        onFocus={() => setNewTitle(title)}
-                        onChange={e => setNewTitle(e.target.value)}
-                        as={EditableInput}
-                      />
-                    </Editable>
+                      </Editable>
 
-                    <IconButton
-                      justifySelf={'flex-end'}
-                      colorScheme={'red'}
-                      variant='ghost'
-                      onClick={() => handleDelete(i, id)}
-                      icon={<DeleteIcon boxSize={5} />}
-                    />
-                  </HStack>
-                </>
-              );
-            })}
-          </VStack>
+                      <IconButton
+                        justifySelf={'flex-end'}
+                        colorScheme={'red'}
+                        variant='ghost'
+                        onClick={() => handleDelete(i, id)}
+                        icon={<DeleteIcon boxSize={5} />}
+                      />
+                    </HStack>
+                  </>
+                );
+              })}
+            </VStack>
+          ) : (
+            <Heading fontSize={'2xl'} textAlign='center'>
+              {'You dont have any todo, would you like to add some..'}
+            </Heading>
+          )}
           <HStack
             spacing={'6'}
             justify='space-between'

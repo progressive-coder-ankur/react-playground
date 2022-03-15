@@ -83,6 +83,11 @@ const TodosPage = props => {
         .update({ is_complete: !is_complete })
         .match({ id: `${id}` });
       if (error) throw error;
+      if (data) {
+        let newTodos = [...fetchedTodos];
+        newTodos[i].is_complete = !is_complete;
+        setFetchedTodos(newTodos);
+      }
     } catch (error) {
       console.log(error);
       setError(error || error.message);
@@ -198,6 +203,7 @@ const TodosPage = props => {
                 return (
                   <>
                     <HStack
+                      key={id}
                       spacing={'6'}
                       justify='flex-start'
                       align='center'
